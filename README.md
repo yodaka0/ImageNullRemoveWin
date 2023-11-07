@@ -105,6 +105,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 ## Usage：使い方
 
 <br />
+
 0. ディレクトリの移動
 
     ```commandprompt
