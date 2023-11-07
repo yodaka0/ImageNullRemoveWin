@@ -106,9 +106,11 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 
 <br />
 0. ディレクトリの移動
+
     ```commandprompt
     cd {ImageNullRemoveWinのパス}
     ```
+    
 1. conda環境のアクティベート
 
     ```commandprompt
