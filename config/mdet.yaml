@@ -1,0 +1,11 @@
+session_root:
+image_list_file_path:
+output_dir:
+
+mdet_config:
+  model_path: "./models/md_v5a.0.0.pt"
+  output_absolute_path: False
+  threshold: 0.1
+  verbose: True
+  recursive: True
+
