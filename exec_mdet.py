@@ -95,6 +95,7 @@ def process_image(im_file, detector, confidence_threshold, image=None,
             if object > 0 :  
                 folder = os.path.dirname(folders)+"\\"
                 new_folder = im_file.replace(folder,"").replace(".JPG","_bb.JPG")
+                ex_file =os.path.basename(new_folder)
                 new_file = folder + new_folder.replace("\\","_out\\")
                 draw = ImageDraw.Draw(image)
                 for b in bbox:
@@ -122,6 +123,11 @@ def process_image(im_file, detector, confidence_threshold, image=None,
         result["Make"] = exif_data[271]
         #result["Model"] = exif_data[272]
         result["object"] = object
+        try:
+            if object > 0 :  
+                result["extract_file"] = ex_file
+        except Exception as e:
+            result["extract_file"] = ""
     except Exception as e:
         if not quiet:
             print('Image {} cannot be processed. Exception: {}'.format(im_file, e))
