@@ -43,7 +43,9 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 * Conda
 
     miniconda(anaconda)をインストール
+    https://docs.conda.io/projects/miniconda/en/latest/
 
+    mambaのインストール
     ```commandprompt 
     conda install mamba -c conda-forge
     ```
@@ -80,6 +82,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
     ```commandprompt
     mamba env create -f environment.yml
     ```
+    
 4. 以下のサイトを見てバージョンを合わせたものをインストールする(if use gpu)
     CUDA Toolkit 12.3 Downloads
     https://developer.nvidia.com/cuda-downloads 
@@ -136,6 +139,6 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
    カメラデータが入ったフォルダにjsonファイルが保存される。
    カメラデータが入ったフォルダ_outにcsvファイルが保存される
 
-setting
-src/utils/config.pyのclass MDetConfig:にあるthresholdを変更することで検出の閾値を設定できます(デフォルトは0.2)。
+<setting> 
+src/utils/config.py の class MDetConfig:にあるthresholdを変更することで検出の閾値を設定できます(デフォルトは0.2)。
 
