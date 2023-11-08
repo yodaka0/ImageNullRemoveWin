@@ -129,8 +129,10 @@ class PTDetector:
             gn = torch.tensor(img_original.shape)[[1, 0, 1, 0]]  # normalization gain whwh
 
             for det in pred:
+                bbox = []
                 if len(det):
                     object = True
+                    
                     # Rescale boxes from img_size to im0 size
                     det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img_original.shape).round()
 
@@ -147,19 +149,21 @@ class PTDetector:
                         if cls not in (1, 2, 3):
                             raise KeyError(f'{cls} is not a valid class.')
 
+                        bbox.append(ct_utils.truncate_float_array(api_box, precision=COORD_DIGITS))
+
                         detections.append({
                             'category': str(cls),
                             'conf': conf,
                             'bbox': ct_utils.truncate_float_array(api_box, precision=COORD_DIGITS)
                         })
                         max_conf = max(max_conf, conf)
-                    print(detections)
+                    #print(detections)
 
         except Exception as e:
             result['failure'] = FAILURE_INFER
 
 
-        return result, object
+        return result, object, bbox
 
 
 if __name__ == '__main__':
