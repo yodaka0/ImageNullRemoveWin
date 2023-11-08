@@ -91,26 +91,29 @@ def process_image(im_file, detector, confidence_threshold, image=None,
     try:
         result, object, bbox = detector.generate_detections_one_image(
             image, im_file, detection_threshold=confidence_threshold, image_size=image_size,folders=folders) 
-        if object == True:  
-            folder = os.path.dirname(folders)+"\\"
-            new_folder = im_file.replace(folder,"").replace(".JPG","_bb.JPG")
-            new_file = folder + new_folder.replace("\\","_out\\")
-            draw = ImageDraw.Draw(image)
-            for b in bbox:
-                image_width, image_height = image.size
-                image_bbox = [
-                        b[0] * image_width,  # x0
-                        b[1] * image_height, # y0
-                        (b[0]+b[2]) * image_width,  # x1
-                        (b[1]+b[3]) * image_height  # y1
-                        ]
-                draw.rectangle(image_bbox, outline='red')
-            
-            if os.path.exists(new_file):
-                print("{new_file} is exists")
-            else:
-                print(new_file)
-                image.save(new_file)
+        try:
+            if object > 0 :  
+                folder = os.path.dirname(folders)+"\\"
+                new_folder = im_file.replace(folder,"").replace(".JPG","_bb.JPG")
+                new_file = folder + new_folder.replace("\\","_out\\")
+                draw = ImageDraw.Draw(image)
+                for b in bbox:
+                    image_width, image_height = image.size
+                    image_bbox = [
+                            b[0] * image_width,  # x0
+                            b[1] * image_height, # y0
+                            (b[0]+b[2]) * image_width,  # x1
+                            (b[1]+b[3]) * image_height  # y1
+                            ]
+                    draw.rectangle(image_bbox, outline='red')
+                
+                if os.path.exists(new_file):
+                    print(f"{new_file} is exists")
+                else:
+                    print(new_file)
+                    image.save(new_file)
+        except Exception as e:
+            object = 0
         exif_data = image._getexif()
         #result["ModifyDate"] = exif_data[306]
         date, time = exif_data[36867].split(' ')
@@ -125,7 +128,7 @@ def process_image(im_file, detector, confidence_threshold, image=None,
         result = {
             'file': im_file,
             'failure': FAILURE_INFER,
-            'object': False
+            'object': 0
         }
         return result
 
