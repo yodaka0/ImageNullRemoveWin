@@ -20,7 +20,7 @@ def cpu_count() -> int:
 class MDetConfig:
     image_source: Path = MISSING
     model_path: Path = Path("models/md_v5a.0.0.pt")
-    threshold: float = 0.1
+    threshold: float = 0.2
     output_absolute_path: bool = True
     ncores: int = cpu_count()
     verbose: bool = False
