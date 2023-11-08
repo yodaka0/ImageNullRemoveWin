@@ -7,6 +7,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 
 このプログラムは、https://github.com/gifu-wildlife/MDetToolsForJCameraTraps を元に作成しました。
  
+![10100043_bb](https://github.com/yodaka0/ImageNullRemoveWin/assets/38493521/ed5624b0-7db4-4a96-a817-49c062d88e70)
 
 ---
 
@@ -63,13 +64,8 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 ### Instllation：インストール
 
 1. Clone the Repository：リポジトリの複製
-
-    Run ```git clone```,  
-    ```git clone```を実行する
-
-
-    or Download ZIP and Unzip in any directory of yours. 
-    もしくはZIPをダウンロードし、任意のディレクトリで解凍してください。
+    Download ZIP from <>code and Unzip in any directory of yours. 
+    <>codeからZIPをダウンロードし、任意のディレクトリで解凍してください。
 
 2. Move Project Directory：プロジェクトディレクトリへ移動
 
