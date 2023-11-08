@@ -133,7 +133,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
     python exec_mdet.py {カメラデータが入ったフォルダ}
     ```
 4. output
-  {カメラデータが入ったフォルダ}と同じ階層に{カメラデータが入ったフォルダ_out}が作成される
-  {カメラデータが入ったフォルダ}にjsonファイルが保存される
-  {カメラデータが入ったフォルダ_out}にcsvファイルが保存される
+   {カメラデータが入ったフォルダ}と同じ階層に{カメラデータが入ったフォルダ_out}が作成される。
+   {カメラデータが入ったフォルダ}にjsonファイルが保存される。
+   {カメラデータが入ったフォルダ_out}にcsvファイルが保存される
 
