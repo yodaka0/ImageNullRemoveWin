@@ -75,7 +75,7 @@ class PTDetector:
         }
         detections = []
         max_conf = 0.0
-        object = False
+        object = 0
         result['max_detection_conf'] = max_conf
         result['detections'] = detections
 
@@ -131,7 +131,7 @@ class PTDetector:
             for det in pred:
                 bbox = []
                 if len(det):
-                    object = True
+                    object = len(det)
                     
                     # Rescale boxes from img_size to im0 size
                     det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img_original.shape).round()
