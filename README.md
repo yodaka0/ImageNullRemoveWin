@@ -67,13 +67,13 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
     ```git clone```を実行する
 
 
-    or Download ZIP and Unzip in any directory of yours. The following codes are assumed that it was extracted to the user's home directory (`/home/${USER}/`).  
-    もしくはZIPをダウンロードし、任意のディレクトリで解凍してください。なお、このページではユーザのホームディレクトリ（`/home/${USER}/`）に解凍した前提でスクリプトを記載しています。
+    or Download ZIP and Unzip in any directory of yours. 
+    もしくはZIPをダウンロードし、任意のディレクトリで解凍してください。
 
 2. Move Project Directory：プロジェクトディレクトリへ移動
 
     ```commandprompt
-    cd {ImageNullRemoveWinのパス}
+    cd {ImageNullRemoveWin-masterのパス}
     ```
 
 3. create conda environment：conda環境の構築
@@ -109,7 +109,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 0. ディレクトリの移動
 
     ```commandprompt
-    cd {ImageNullRemoveWinのパス}
+    cd {ImageNullRemoveWin-masterのパス}
     ```
     
 1. conda環境のアクティベート
