@@ -321,11 +321,10 @@ def write_results_to_file(results, output_file, relative_path_base=None,
         if detector_file is not None:
 
             print('Warning (write_results_to_file): info struct and detector file supplied, ignoring detector file')
-    
     results_dataframe = pd.DataFrame(results)
-    results_dataframe_object = results_dataframe[results_dataframe['object'] == True]
-    results_dataframe_object = results_dataframe_object.drop('max_detection_conf', axis=1).drop('object', axis=1)
-    results_dataframe_object.to_csv(folders + "_out\\detector_output.csv", index=True)
+    results_dataframe_object = results_dataframe[results_dataframe['object'] > 0]
+    results_dataframe_object = results_dataframe_object.drop('max_detection_conf', axis=1)
+    results_dataframe_object.to_csv(folders + "_out\\" + os.path.basename(folders) + "_output.csv", index=True)
     print('Output csv file saved at detector_output.csv')
 
     final_output = {
