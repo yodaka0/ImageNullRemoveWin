@@ -42,8 +42,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 
 * Conda
 
-    Download installer and run the script.  
-    インストーラーをダウンロードしてスクリプトを実行します。
+    miniconda(anaconda)をインストール
 
     ```commandprompt 
     conda install mamba -c conda-forge
