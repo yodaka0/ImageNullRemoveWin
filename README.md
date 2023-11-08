@@ -52,9 +52,6 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
     ```
     (powershell では出来ない。相性が悪い？)
 
-        For more information, please refer to [miniforge repository](https://github.com/conda-forge/miniforge) and/or [Mamba documentation](https://mamba.readthedocs.io/en/latest/index.html).  
-        詳細については[miniforge repository](https://github.com/conda-forge/miniforge) や[Mamba documentation](https://mamba.readthedocs.io/en/latest/index.html)を参照してください。  
-
     condaのパスを通す
     システム環境変数の編集->環境変数->PATH->新規->condaのpathをコピペ
 
@@ -128,13 +125,13 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
   MegaDetectorの実行
 
     ```commandprompt(conda)
-    python exec_mdet.py {カメラデータが入ったフォルダ}
+    python exec_mdet.py {カメラデータが入ったフォルダの絶対パス}
     ```
 4. output
    カメラデータが入ったフォルダと同じ階層にカメラデータが入ったフォルダ_outが作成される。
    カメラデータが入ったフォルダにjsonファイルが保存される。
    カメラデータが入ったフォルダ_outにcsvファイルが保存される
 
-<setting> 
+*setting
 src/utils/config.py の class MDetConfig:にあるthresholdを変更することで検出の閾値を設定できます(デフォルトは0.2)。
 
