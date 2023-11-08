@@ -137,3 +137,6 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
    カメラデータが入ったフォルダにjsonファイルが保存される。
    カメラデータが入ったフォルダ_outにcsvファイルが保存される
 
+setting
+src/utils/config.pyのclass MDetConfig:にあるthresholdを変更することで検出の閾値を設定できます(デフォルトは0.2)。
+
