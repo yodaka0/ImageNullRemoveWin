@@ -81,7 +81,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
     ```commandprompt
     mamba env create -f environment.yml
     ```
-4. gpuを使う場合、以下のサイトを見てバージョンを合わせたものをインストールする
+4. 以下のサイトを見てバージョンを合わせたものをインストールする(if use gpu)
     CUDA Toolkit 12.3 Downloads
     https://developer.nvidia.com/cuda-downloads 
 
@@ -97,7 +97,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
 5. Download MegaDetector weight file：MegaDetectorの重みファイルのダウンロード
 
     https://github.com/microsoft/CameraTraps/releases/tag/v5.0
-    からダウンロード後、ImageNullRemoveWin\models　内に移動させる
+    からmd_v5a.0.0.ptをダウンロード後、ImageNullRemoveWin\models　内に移動させる
 
 
 ---
@@ -133,5 +133,7 @@ This program aims to detect wildlife from camera trap images using [MegaDetector
     python exec_mdet.py {カメラデータが入ったフォルダ}
     ```  
 
-    カメラデータが入ったフォルダにcsvファイルとjsonファイルが保存される
+   {カメラデータが入ったフォルダ}と同じ階層に{カメラデータが入ったフォルダ_out}が作成される
+   {カメラデータが入ったフォルダ}にjsonファイルが保存される
+   {カメラデータが入ったフォルダ_out}にcsvファイルが保存される
 
