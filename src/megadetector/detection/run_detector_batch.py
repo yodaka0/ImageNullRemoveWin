@@ -323,9 +323,14 @@ def write_results_to_file(results, output_file, relative_path_base=None,
             print('Warning (write_results_to_file): info struct and detector file supplied, ignoring detector file')
     results_dataframe = pd.DataFrame(results)
     results_dataframe_object = results_dataframe[results_dataframe['object'] > 0]
-    results_dataframe_object = results_dataframe_object.drop('max_detection_conf', axis=1)
+    results_dataframe_corrupt = results_dataframe[results_dataframe['object'] < 0]
+    results_dataframe_object = results_dataframe_object.drop('max_detection_conf', axis=1).drop('failure', axis=1)
     results_dataframe_object.to_csv(folders + "_out\\" + os.path.basename(folders) + "_output.csv", index=True)
     print('Output csv file saved at detector_output.csv')
+    if len(results_dataframe_corrupt) > 0:
+        for corrupt in results_dataframe_corrupt['file'] :
+            print('{} was corrupted'.format(corrupt))
+        results_dataframe_corrupt.to_csv(folders + "_out\\" + os.path.basename(folders) + "_corrupt.csv", index=True)
 
     final_output = {
         'images': results,
