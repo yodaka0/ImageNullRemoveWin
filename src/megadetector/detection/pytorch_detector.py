@@ -161,6 +161,7 @@ class PTDetector:
 
         except Exception as e:
             result['failure'] = FAILURE_INFER
+            object = -1
 
 
         return result, object, bbox
