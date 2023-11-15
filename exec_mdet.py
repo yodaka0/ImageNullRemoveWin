@@ -16,7 +16,7 @@ import argparse
 from PIL import Image, ImageDraw
 import pandas as pd
 
-def main():
+"""def main():
     parser = argparse.ArgumentParser(description="Process some arguments.")
     parser.add_argument("session_root", type=str, help="The root directory for the session")
 
@@ -26,7 +26,7 @@ def main():
     # ここで session_root 変数を使用できます
     print(f"Session root is: {session_root}")
 
-    return session_root
+    return session_root"""
 
 def create_new_structure(src_dir, dst_dir):
     for dir, _ ,_ in os.walk(src_dir):
@@ -36,18 +36,23 @@ def create_new_structure(src_dir, dst_dir):
 
 # from src.utils.tag import SessionTag
 if __name__ == '__main__':
-    session_root=main()
+    cli = OmegaConf.from_cli()  # command line interface config
+    if cli.get("config_path"):
+        cli_conf = OmegaConf.merge(OmegaConf.load(cli.config_path), OmegaConf.from_cli())
+    else:
+        cli_conf = OmegaConf.merge(OmegaConf.load("config/mdet.yaml"), OmegaConf.from_cli())
     mconfig = OmegaConf.structured(
-        MDetConfig(image_source=session_root)
+        MDetConfig(image_source=cli_conf.get("session_root"),threshold=cli_conf.get("threshold"))
     )
     sconfig = OmegaConf.structured(
         SummaryConfig()
     )
     rconfig = OmegaConf.structured(
         RootConfig(
-            session_root=session_root, output_dir=session_root,
+            session_root=cli_conf.get("session_root"), output_dir=cli_conf.get("session_root")
         )
     )
+    session_root=cli_conf.get("session_root")
     parent_dir = os.path.dirname(session_root)+"\\"
     create_new_structure(session_root, parent_dir)
     runner = Runner(mconfig=mconfig, sconfig=sconfig, rconfig=rconfig, session_tag="mdet",folders=session_root)
@@ -85,47 +90,49 @@ def process_image(im_file, detector, confidence_threshold, image=None,
                 print('Image {} cannot be loaded. Exception: {}'.format(im_file, e))
             result = {
                 'file': im_file,
-                'failure': FAILURE_IMAGE_OPEN,
-                'object': -1
+                'failure': FAILURE_IMAGE_OPEN
             }
             return result
     try:
-        folder = os.path.dirname(folders)+"\\"
-        new_folder = im_file.replace(folder,"").replace(".JPG","_bb.JPG")
-        ex_file =os.path.basename(new_folder)
-        new_file = folder + new_folder.replace("\\","_out\\")
-        if os.path.exists(new_file):
-            print(f"{new_file} is exists")
-            object = 1
-            result = {
-                'file': im_file,
-                'detections': 'exists',
-            }
-        else:
-            result, object, bbox = detector.generate_detections_one_image(
-                image, im_file, detection_threshold=confidence_threshold, image_size=image_size,folders=folders) 
-        
-            if object > 0 :   
+        result, object, bbox = detector.generate_detections_one_image(
+            image, im_file, detection_threshold=confidence_threshold, image_size=image_size,folders=folders) 
+        try:
+            if object > 0 :  
+                folder = os.path.dirname(folders)+"\\"
+                new_folder = im_file.replace(folder,"").replace(".JPG","_bb.JPG")
+                ex_file =os.path.basename(new_folder)
+                new_file = folder + new_folder.replace("\\","_out\\")
                 draw = ImageDraw.Draw(image)
                 for b in bbox:
                     image_width, image_height = image.size
                     image_bbox = [
-                        b[0] * image_width,  # x0
-                        b[1] * image_height, # y0
-                        (b[0]+b[2]) * image_width,  # x1
-                        (b[1]+b[3]) * image_height  # y1
-                        ]
+                            b[0] * image_width,  # x0
+                            b[1] * image_height, # y0
+                            (b[0]+b[2]) * image_width,  # x1
+                            (b[1]+b[3]) * image_height  # y1
+                            ]
                     draw.rectangle(image_bbox, outline='red')
-            
-                image.save(new_file)
-
+                
+                if os.path.exists(new_file):
+                    print(f"{new_file} is exists")
+                else:
+                    print(new_file)
+                    image.save(new_file)
+        except Exception as e:
+            object = 0
         exif_data = image._getexif()
+        #result["ModifyDate"] = exif_data[306]
         date, time = exif_data[36867].split(' ')
         result["Date"] = date
         result["Time"] = time
         result["Make"] = exif_data[271]
+        #result["Model"] = exif_data[272]
         result["object"] = object
-        result["extract_file"] = ex_file
+        try:
+            if object > 0 :  
+                result["extract_file"] = ex_file
+        except Exception as e:
+            result["extract_file"] = ""
     except Exception as e:
         if not quiet:
             print('Image {} cannot be processed. Exception: {}'.format(im_file, e))
@@ -158,7 +165,7 @@ def producer_func(q,image_files):
             image = viz_utils.load_image(im_file)
         except Exception as e:
             print('Producer process: image {} cannot be loaded. Exception: {}'.format(im_file, e))
-            image = None
+            raise
 
         if verbose:
             print('Queueing image {}'.format(im_file)); sys.stdout.flush()
