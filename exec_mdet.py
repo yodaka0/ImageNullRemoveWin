@@ -90,49 +90,47 @@ def process_image(im_file, detector, confidence_threshold, image=None,
                 print('Image {} cannot be loaded. Exception: {}'.format(im_file, e))
             result = {
                 'file': im_file,
-                'failure': FAILURE_IMAGE_OPEN
+                'failure': FAILURE_IMAGE_OPEN,
+                'object': -1
             }
             return result
     try:
-        result, object, bbox = detector.generate_detections_one_image(
-            image, im_file, detection_threshold=confidence_threshold, image_size=image_size,folders=folders) 
-        try:
-            if object > 0 :  
-                folder = os.path.dirname(folders)+"\\"
-                new_folder = im_file.replace(folder,"").replace(".JPG","_bb.JPG")
-                ex_file =os.path.basename(new_folder)
-                new_file = folder + new_folder.replace("\\","_out\\")
+        folder = os.path.dirname(folders)+"\\"
+        new_folder = im_file.replace(folder,"").replace(".JPG","_bb.JPG")
+        ex_file =os.path.basename(new_folder)
+        new_file = folder + new_folder.replace("\\","_out\\")
+        if os.path.exists(new_file):
+            print(f"{new_file} is exists")
+            object = 1
+            result = {
+                'file': im_file,
+                'detections': 'exists',
+            }
+        else:
+            result, object, bbox = detector.generate_detections_one_image(
+                image, im_file, detection_threshold=confidence_threshold, image_size=image_size,folders=folders) 
+        
+            if object > 0 :   
                 draw = ImageDraw.Draw(image)
                 for b in bbox:
                     image_width, image_height = image.size
                     image_bbox = [
-                            b[0] * image_width,  # x0
-                            b[1] * image_height, # y0
-                            (b[0]+b[2]) * image_width,  # x1
-                            (b[1]+b[3]) * image_height  # y1
-                            ]
+                        b[0] * image_width,  # x0
+                        b[1] * image_height, # y0
+                        (b[0]+b[2]) * image_width,  # x1
+                        (b[1]+b[3]) * image_height  # y1
+                        ]
                     draw.rectangle(image_bbox, outline='red')
-                
-                if os.path.exists(new_file):
-                    print(f"{new_file} is exists")
-                else:
-                    print(new_file)
-                    image.save(new_file)
-        except Exception as e:
-            object = 0
+            
+                image.save(new_file)
+
         exif_data = image._getexif()
-        #result["ModifyDate"] = exif_data[306]
         date, time = exif_data[36867].split(' ')
         result["Date"] = date
         result["Time"] = time
         result["Make"] = exif_data[271]
-        #result["Model"] = exif_data[272]
         result["object"] = object
-        try:
-            if object > 0 :  
-                result["extract_file"] = ex_file
-        except Exception as e:
-            result["extract_file"] = ""
+        result["extract_file"] = ex_file
     except Exception as e:
         if not quiet:
             print('Image {} cannot be processed. Exception: {}'.format(im_file, e))
