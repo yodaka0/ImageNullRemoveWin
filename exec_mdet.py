@@ -41,9 +41,14 @@ if __name__ == '__main__':
         cli_conf = OmegaConf.merge(OmegaConf.load(cli.config_path), OmegaConf.from_cli())
     else:
         cli_conf = OmegaConf.merge(OmegaConf.load("config/mdet.yaml"), OmegaConf.from_cli())
-    mconfig = OmegaConf.structured(
-        MDetConfig(image_source=cli_conf.get("session_root"),threshold=cli_conf.get("threshold"))
-    )
+    try:
+        mconfig = OmegaConf.structured(
+            MDetConfig(image_source=cli_conf.get("session_root"),threshold=cli_conf.get("threshold"))
+        )
+    except:
+        mconfig = OmegaConf.structured(
+            MDetConfig(image_source=cli_conf.get("session_root"),threshold=0.2)
+        )
     sconfig = OmegaConf.structured(
         SummaryConfig()
     )
