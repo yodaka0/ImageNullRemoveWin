@@ -128,12 +128,16 @@ def process_image(im_file, detector, confidence_threshold, image=None,
                     draw.rectangle(image_bbox, outline='red')
             
                 image.save(new_file)
-
-        exif_data = image._getexif()
-        date, time = exif_data[36867].split(' ')
-        result["Date"] = date
-        result["Time"] = time
-        result["Make"] = exif_data[271]
+        try:
+            exif_data = image._getexif()
+            date, time = exif_data[36867].split(' ')
+            result["Date"] = date
+            result["Time"] = time
+            result["Make"] = exif_data[271]
+        except:
+            result["Date"] = "None"
+            result["Time"] = "None"
+            result["Make"] = "None"
         result["object"] = object
         result["extract_file"] = ex_file
     except Exception as e:
